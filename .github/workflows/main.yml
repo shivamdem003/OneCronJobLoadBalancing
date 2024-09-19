@@ -30,7 +30,7 @@ jobs:
 
       - name: Deploy Jar to EC2 Instances
         env:
-          EC2_HOST: "98.83.154.94"  # Your first EC2 instance public IP
+          EC2_HOST: "98.83.154.94"  # Your EC2 instance public IP
           EC2_HOST2: "35.153.199.226"  # Your second EC2 instance public IP
           EC2_USER: "ec2-user"       # Your SSH username
           EC2_KEY: |                 # Your SSH private key in PEM format
