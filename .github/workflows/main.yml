@@ -65,9 +65,12 @@ jobs:
           echo "$EC2_KEY" > ec2-key.pem
           chmod 400 ec2-key.pem
           for EC2_HOST in $EC2_HOST1 $EC2_HOST2; do
+            echo "Deploying to $EC2_HOST"
             scp -o StrictHostKeyChecking=no -i ec2-key.pem target/cronjobs-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/
-            ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST
+            ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST << EOF
+              echo "Connected to $EC2_HOST"
+              ls -l /home/$EC2_USER/
               sudo mv /home/$EC2_USER/cronjobs-0.0.1-SNAPSHOT.jar /devl/
               sudo /devl/startup.sh
-          EOF
+            EOF
           done
