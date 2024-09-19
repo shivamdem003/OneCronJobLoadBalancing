@@ -25,9 +25,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
-      - name: List files in target directory
-        run: ls -l target/
-
       - name: Deploy Jar to EC2 Instances
         env:
           EC2_HOST1: "98.83.154.94"  # Your first EC2 instance public IP
