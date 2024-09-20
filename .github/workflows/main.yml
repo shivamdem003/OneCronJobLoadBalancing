@@ -30,7 +30,7 @@ jobs:
 
       - name: Deploy Jar to EC2 Instances
         env:
-          EC2_HOST: "http://myloadbalancer-1921481299.us-east-1.elb.amazonaws.com/"  # Your EC2 instance public IP
+          EC2_HOST: "107.20.58.189"  # Your EC2 instance public IP
           EC2_HOST2: "34.204.89.144"  # Your second EC2 instance public IP
           EC2_USER: "ec2-user"       # Your SSH username
           EC2_KEY: |                 # Your SSH private key in PEM format
@@ -75,11 +75,18 @@ jobs:
           # Debug: List files to confirm the key file exists and has correct permissions
           ls -la
           
-          # Securely copy the JAR file to the EC2 instance
+          # Deploy to first EC2 instance
           scp -o StrictHostKeyChecking=no -i ec2-key.pem target/cronjobs-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/
           
-          # Execute commands on the EC2 instance
-          ssh -T -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST <<EOF
+          ssh -T -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST1 <<EOF
+            sudo mv /home/$EC2_USER/cronjobs-0.0.1-SNAPSHOT.jar /devl/
+            #sudo /devl/startup.sh
+          EOF
+          
+          # Deploy to second EC2 instance
+          scp -o StrictHostKeyChecking=no -i ec2-key.pem target/cronjobs-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST2:/home/$EC2_USER/
+          
+          ssh -T -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST2 <<EOF
             sudo mv /home/$EC2_USER/cronjobs-0.0.1-SNAPSHOT.jar /devl/
             #sudo /devl/startup.sh
           EOF
