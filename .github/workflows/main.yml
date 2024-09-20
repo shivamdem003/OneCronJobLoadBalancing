@@ -62,9 +62,23 @@ jobs:
             Gc3+Hhqsk7EgdkdNjP0EzLh+iLs7B+BbqKDpFInOkMmC8v9/le8QqX4=
             -----END RSA PRIVATE KEY-----
         run: |
+          # Debug: Print working directory
+          pwd
+          
+          # Debug: List files in working directory
+          ls -la
+          
+          # Write the private key to a file and set the correct permissions
           echo "$EC2_KEY" > ec2-key.pem
           chmod 400 ec2-key.pem
+          
+          # Debug: List files to confirm the key file exists and has correct permissions
+          ls -la
+          
+          # Securely copy the JAR file to the EC2 instance
           scp -o StrictHostKeyChecking=no -i ec2-key.pem target/cronjobs-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/
+          
+          # Execute commands on the EC2 instance
           ssh -T -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST <<EOF
             sudo mv /home/$EC2_USER/cronjobs-0.0.1-SNAPSHOT.jar /devl/
             sudo /devl/startup.sh
