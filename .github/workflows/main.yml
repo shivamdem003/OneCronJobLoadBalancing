@@ -78,7 +78,7 @@ jobs:
           # Deploy to first EC2 instance
           scp -o StrictHostKeyChecking=no -i ec2-key.pem target/cronjobs-0.0.1-SNAPSHOT.jar $EC2_USER@$EC2_HOST:/home/$EC2_USER/
           
-          ssh -T -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST1 <<EOF
+          ssh -T -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST <<EOF
             sudo mv /home/$EC2_USER/cronjobs-0.0.1-SNAPSHOT.jar /devl/
             #sudo /devl/startup.sh
           EOF
